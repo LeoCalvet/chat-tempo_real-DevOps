@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/LeoCalvet/avaliacao_tmaior/issues"
   },
-  "homepage": "https://github.com/LeoCalvet/avaliacao_tmaior#readme"
+  "homepage": "https://github.com/LeoCalvet/avaliacao_tmaior#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
