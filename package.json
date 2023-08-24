@@ -1,5 +1,5 @@
 {
-  "name": "av_tmaior",
+  "name": "ezops-test-leonardo_calvet",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LeoCalvet/avaliacao_tmaior"
+    "url": "git+https://github.com/LeoCalvet/ezops-test-leonardo_calvet"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LeoCalvet/avaliacao_tmaior/issues"
+    "url": "https://github.com/LeoCalvet/ezops-test-leonardo_calvet/issues"
   },
-  "homepage": "https://github.com/LeoCalvet/avaliacao_tmaior#readme",
+  "homepage": "https://github.com/LeoCalvet/ezops-test-leonardo_calvet#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongodb": "^5.8.1",
+    "mongoose": "^7.4.4",
+    "socket.io": "^4.7.2"
   }
 }
