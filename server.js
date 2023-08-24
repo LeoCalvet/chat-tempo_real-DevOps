@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const urlBD = 'mongodb+srv://leonardo-calvet:1234@avtmaior-cluster.ikyqnfn.mongodb.net/?retryWrites=true&w=majority';
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 mongoose.connect(urlBD)
   .then(() => console.log('mongodb connected'))
@@ -25,14 +27,17 @@ app.get('/messages', (req, res) => {
   })
 })
 
-app.post('/messages', (req, res) => {
-  var message = new Message(req.body);
-  message.save()
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(err => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-})
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('chat message', (msg) => {
+      Message.create(msg).then(() => {  // Salvando mensagem no banco de dados
+          io.emit('chat message', msg);  // Enviando a mensagem para todos os clientes conectados
+      });
+  });
+});
+
+http.listen(3000, () => {
+  console.log('server is running on port 3000');
+});
+
