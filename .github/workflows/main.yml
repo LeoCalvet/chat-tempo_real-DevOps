@@ -22,6 +22,7 @@ jobs:
           docker push $IMAGE_NAME:$GITHUB_SHA
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to EC2
