@@ -1,0 +1,35 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  IMAGE_NAME: leocalvet/live_chat-ezops-test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build e push do Docker image
+        run: |
+          docker build . --file Dockerfile --tag $IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest $IMAGE_NAME:$GITHUB_SHA
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$GITHUB_SHA
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
+            docker stop my-container
+            docker pull $IMAGE_NAME:latest
+            docker run -d --name my-container -p 3000:3000 $IMAGE_NAME:latest
+          EOF
