@@ -30,6 +30,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
             docker stop my-container
+            docker rm my-container
             docker pull $IMAGE_NAME:latest
             docker run -d --name my-container -p 3000:3000 $IMAGE_NAME:latest
           EOF
